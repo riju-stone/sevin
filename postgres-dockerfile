@@ -1,5 +1,0 @@
-FROM postgres:17
-
-WORKDIR /app
-
-COPY pkg/db/setup.sql /docker-entrypoint-initdb.d/

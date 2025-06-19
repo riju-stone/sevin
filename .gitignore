@@ -23,7 +23,3 @@ go.work.sum
 
 # env file
 .env
-.env.local
-
-# docker image data
-data/
