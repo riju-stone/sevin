@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"time"
 
@@ -23,11 +24,27 @@ func InitCustomLogger() {
 		fmt.Printf("Invalid log level '%s', defaulting to info\n", logLevel)
 	}
 
+	// Setup log file writer
+	logFile := os.Getenv("LOG_FILE")
+	if logFile == "" {
+		logFile = "logs/api.log"
+	}
+	file, err := os.OpenFile(logFile, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		panic("Failed to open log file: " + err.Error())
+	}
+	multiWriter := io.MultiWriter(os.Stdout, file)
+
+	// Setup logger
 	CustomLogger = logrus.New()
 	CustomLogger.SetFormatter(&logrus.TextFormatter{
-		FullTimestamp:   true,
-		TimestampFormat: time.RFC3339,
+		DisableColors:          true,
+		DisableLevelTruncation: true,
+		FullTimestamp:          true,
+		PadLevelText:           true,
+		QuoteEmptyFields:       true,
+		TimestampFormat:        time.RFC3339,
 	})
 	CustomLogger.SetLevel(level)
-	CustomLogger.SetOutput(os.Stdout)
+	CustomLogger.SetOutput(multiWriter)
 }

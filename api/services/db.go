@@ -13,6 +13,7 @@ var DB *gorm.DB
 func InitDB() {
 	l := utils.CustomLogger
 	dbConn := os.Getenv("DB_CONN")
+	l.Debugf("Connecting to the database: %s", dbConn)
 
 	conn, err := gorm.Open(postgres.Open(dbConn), &gorm.Config{})
 	if err != nil {

@@ -29,6 +29,7 @@ func main() {
 	r.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("OK"))
+		l.Info("Health check endpoint hit")
 	})
 
 	http.Handle("/", r)

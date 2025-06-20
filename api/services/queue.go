@@ -31,6 +31,8 @@ func InitTaskQueue() {
 		l.Fatalf("Failed to open a channel: %v", err)
 	}
 
+	l.Infof("Connected to RabbitMQ")
+
 	// Store the connection and channel in the TaskQueue variable
 	TaskQueue = &RabbitMQClient{
 		Conn:    conn,
