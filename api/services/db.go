@@ -8,17 +8,15 @@ import (
 	"gorm.io/gorm"
 )
 
-var DB *gorm.DB
-
-func InitDB() {
+func ConnectToDB() (*gorm.DB, error) {
 	l := utils.CustomLogger
 	dbConn := os.Getenv("DB_CONN")
 	l.Debugf("Connecting to the database: %s", dbConn)
 
 	conn, err := gorm.Open(postgres.Open(dbConn), &gorm.Config{})
 	if err != nil {
-		l.Fatalf("Failed to connect to the database: %v", err)
+		return nil, err
 	}
-	DB = conn
 	l.Info("Connected to the database")
+	return conn, nil
 }
